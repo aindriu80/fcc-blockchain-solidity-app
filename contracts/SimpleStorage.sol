@@ -13,4 +13,13 @@ contract SimpleStorage{
 	// This get initialed to zero
 	uint256 favouriteNumberTwo;  
 
+	function store(uint256 _favourite)public{
+	favouriteNumber = _favouriteNumber;
+		  
+	}
+
+	function retreve () public view returns(wint256){
+		return favouriteNumber;
+	}
+
 }
