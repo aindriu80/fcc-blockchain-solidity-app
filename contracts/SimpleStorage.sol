@@ -19,6 +19,8 @@ contract SimpleStorage {
         string name;
     }
 
+    mapping(string =>uint256)public nameTofavouriteNumber;
+
     // uint256[] public favouriteNumberList;
     People[] public people;
 
@@ -32,8 +34,10 @@ contract SimpleStorage {
         return favouriteNumber;
     }
 
+    // calldata, memory, storage
     function addPerson(string memory _name, uint256 _favouriteNumber) public {
 	People memory newPerson = People({favouriteNumber; _favouriteNumber, name: _name});
 	people.push(newPerson);
+    nameTofavouriteNumber[_name] = favouriteNumber;
     }
 }
