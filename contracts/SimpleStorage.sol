@@ -1,49 +1,32 @@
-// SPDX-Licence-Identifier: MIT
-pragma solidity ^0.8.8; // 0.8.8
+// SPDX-License-Identifier: MIT
 
-// EVM, Ethereum Virtual Machine
-// Avalanche, Fantom, Polygon
+pragma solidity 0.8.8;
+// pragma solidity ^0.8.0;
+// pragma solidity >=0.8.0 <0.9.0;
 
 contract SimpleStorage {
-    // Simple types
-    // boolean, uint, int, address, bytes
-    bool hasFavouriteNumber = true;
-    uint256 favouriteNumber = 5;
-    string favouriteNumberInText = "Five";
-    int256 favouriteInt = -5;
-    address myAddress = 0x233223;
-    bytes32 favouriteBytes = "cat";
-    // This get initialed to zero
-    uint256 favouriteNumberTwo;
-    People public person = People({favouriteNumber: 2, name: "Aindriú"});
 
-    // Creating a struct
+    uint256 favoriteNumber;
+
     struct People {
-        uint256 favouriteNumber;
+        uint256 favoriteNumber;
         string name;
     }
-
-    mapping(string =>uint256)public nameTofavouriteNumber;
-
-    // uint256[] public favouriteNumberList;
-    // creating a function that modifies the state of the blockchain
+    // uint256[] public anArray;
     People[] public people;
 
-    // view pure
-    // creating a function that does not modifies the state of the blockchain
-    function store(uint256 _favourite) public {
-        favouriteNumber = _favouriteNumber;
+    mapping(string => uint256) public nameToFavoriteNumber;
+
+    function store(uint256 _favoriteNumber) public virtual {
+        favoriteNumber = _favoriteNumber;
+    }
+    
+    function retrieve() public view returns (uint256){
+        return favoriteNumber;
     }
 
-    function retreve() public view returns (wint256) {
-        return favouriteNumber;
-    }
-
-    // calldata, memory, storage
-    // specifying different data locaiton
-    function addPerson(string memory _name, uint256 _favouriteNumber) public {
-	People memory newPerson = People({favouriteNumber; _favouriteNumber, name: _name});
-	people.push(newPerson);
-    nameTofavouriteNumber[_name] = favouriteNumber;
+    function addPerson(string memory _name, uint256 _favoriteNumber) public {
+        people.push(People(_favoriteNumber, _name));
+        nameToFavoriteNumber[_name] = _favoriteNumber;
     }
 }
