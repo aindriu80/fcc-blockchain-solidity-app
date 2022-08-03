@@ -5,35 +5,11 @@
 // SPDX-Licence-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface AggregatorV3Interface {
-    function decimals() external view returns (uint8);
+// Importing from online
+// import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-    function description() external view returns (string memory);
-
-    function version() external view returns (uint256);
-
-    function getRoundData(uint80 _roundId)
-        external
-        view
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        );
-
-    function latestRoundData()
-        external
-        view
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        );
-}
+// Importing locally.
+import "./AggregatorV3Interface.sol";
 
 contract FundMe {
     uint256 public minimumUsd = 50;
@@ -47,9 +23,14 @@ contract FundMe {
         //  What is reverting? -> it undos any action before, and sends remaining gas back
     }
 
-    function getPrice() public {
+    function getPrice() public view returns (uint256){
         // need ABI & address of contact
         // Address = 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
+        (,int256 price,,,) = priceFeed.latestRoundData();
+        //  ETH in terms of USD
+        // 300.00000000 with 8 decimal palces
+        return uint256(price * 1e10); // 1**10 = 10000000000
     }
 
     function getVersion() public view returns (uint256) {
