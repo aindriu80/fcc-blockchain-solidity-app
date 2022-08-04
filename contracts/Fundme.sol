@@ -12,7 +12,7 @@ pragma solidity ^0.8.0;
 import "./AggregatorV3Interface.sol";
 
 contract FundMe {
-    uint256 public minimumUsd = 50;
+    uint256 public minimumUsd = 50 * 1e18; // 1 * 10 * 18
 
     function fund() public payable {
         // Want to be able to set a minimum amount in USD
@@ -40,7 +40,16 @@ contract FundMe {
         return priceFeed.version();
     }
 
-    function getConversionRate() public {}
+    function getConversionRate(uint256 ethAmount) public view returns(uint256) {
+        uint256 ethPrice = getPrice();
+        //  eth price = $3000 = 3000_000000000000000000 = ETH / USD price
+        //  1_000000000000000000 ETH
+
+        uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1e18; 
+        //  equals 2.999e21 or 2999.99999999999999999
+        // use round numbers in Ethereum
+        return ethAmountInUsd;
+    }
 
     // function withdraw(){
 
