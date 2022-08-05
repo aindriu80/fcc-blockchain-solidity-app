@@ -14,6 +14,10 @@ import "./AggregatorV3Interface.sol";
 contract FundMe {
     uint256 public minimumUsd = 50 * 1e18; // 1 * 10 * 18
 
+    // Keeping track of people who send money
+    address[] public funders;
+    mapping(address => uint256) public addressToAmountFunded;
+
     function fund() public payable {
         // Want to be able to set a minimum amount in USD
         // 1. How do we send ETH to this contract
@@ -21,6 +25,9 @@ contract FundMe {
         require(msg.value >= minimumUsd, "Didn't send enough"); // 1e18 == 1 * 10 ** 18 == 1000000000000000000 (18 zeros)
 
         //  What is reverting? -> it undos any action before, and sends remaining gas back
+
+        funders.push(msg.sender);
+        addressToAmountFunded[msg.sender] = msg.value;
     }
 
     function getPrice() public view returns (uint256){
