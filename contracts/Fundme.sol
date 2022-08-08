@@ -16,6 +16,13 @@ contract FundMe {
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
 
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+        
+    }
+
     function fund() public payable {
         require(
             msg.value.getConversionRate() >= minimumUsd,
@@ -34,22 +41,24 @@ contract FundMe {
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
         }
+
         //  reset the array
         funders = new address[](0);
 
         //  need to actually withdraw funds - 3 different ways: transfer, send, call
         // Transfer - the 3 methods
 
-        // payable(msg.sender) = payable adress
-        payable(msg.sender).transfer(address(this).balance);
+        // // payable(msg.sender) = payable adress
+        // payable(msg.sender).transfer(address(this).balance);
 
-        // Send
-        bool sendSuccess = payable(msg.sender).send(address(this).balance);
-        require(sendSuccess, "Send Failed");
+        // // Send
+        // bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        // require(sendSuccess, "Send Failed");
 
         // Call
-        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
+        (bool callSuccess, ) = payable(msg.sender).call{
+            value: address(this).balance
+        }("");
         require(callSuccess, "Call Failed");
-
     }
 }
