@@ -20,7 +20,6 @@ contract FundMe {
 
     constructor() {
         owner = msg.sender;
-        
     }
 
     function fund() public payable {
@@ -60,5 +59,10 @@ contract FundMe {
             value: address(this).balance
         }("");
         require(callSuccess, "Call Failed");
+    }
+
+    modifier onlyOwner{
+        require(msg.sender == owner, "Sender is not owner!");
+         // doing the rest of the code
     }
 }
