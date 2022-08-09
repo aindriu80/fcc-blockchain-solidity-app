@@ -10,7 +10,11 @@ import "./PriceConverter.sol";
 contract FundMe {
     using PriceConverter for uint256;
 
-    uint256 public minimumUsd = 50 * 1e18; // 1 * 10 * 18
+    uint256 public constant MINIMUM_USD = 50 * 1e18; // 1 * 10 * 18
+    // 21,415 - using a constant
+    // 23,515 - not using a constant
+    // 21,415 * 141000000000 = $9.058545 with Ethereum at around $3k
+    // 23,515 * 141000000000 = $9.946845
 
     // Keeping track of people who send money
     address[] public funders;
@@ -24,7 +28,7 @@ contract FundMe {
 
     function fund() public payable {
         require(
-            msg.value.getConversionRate() >= minimumUsd,
+            msg.value.getConversionRate() >= MINIMUM_USD,
             "Didn't send enough!"
         );
         funders.push(msg.sender);
