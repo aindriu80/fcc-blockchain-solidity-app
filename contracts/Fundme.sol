@@ -20,10 +20,13 @@ contract FundMe {
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
 
-    address public owner;
+    address public immutable i_owner;
+
+    // 21,508 gas - immutable
+    // 23,644 - non immutable
 
     constructor() {
-        owner = msg.sender;
+        i_owner = msg.sender;
     }
 
     function fund() public payable {
@@ -65,8 +68,8 @@ contract FundMe {
         require(callSuccess, "Call Failed");
     }
 
-    modifier onlyOwner{
-        require(msg.sender == owner, "Sender is not owner!");
-         // doing the rest of the code
+    modifier onlyOwner() {
+        require(msg.sender == i_owner, "Sender is not owner!");
+        // doing the rest of the code
     }
 }
