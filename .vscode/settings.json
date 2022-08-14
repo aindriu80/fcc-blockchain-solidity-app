@@ -7,5 +7,7 @@
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
 		"**/node_modules": true
-	}
+	},
+	"solidity.compileUsingRemoteVersion": "v0.8.7+commit.e28d00a7",
+	"solidity.enableLocalNodeCompiler": false
 }
