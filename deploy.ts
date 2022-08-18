@@ -1,19 +1,26 @@
-const ethers = require('ethers')
-const fs = require('fs')
-require('dotenv').config()
+// const ethers = require('ethers')
+// const fs = require('fs')
+// require('dotenv').config()
+
+import { ethers } from 'ethers'
+import * as fs from 'fs-extra'
+import 'dotenv/config'
 
 async function main() {
     // compile them in our code
     // compile them seperately
     // http://127.0.0.1:7545
-    const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL)
-    // const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider)
-    const encryptedJson = fs.readFileSync('./.encryptedKey.json', 'utf8')
-    let wallet = new ethers.Wallet.fromEncryptedJsonSync(
-        encryptedJson,
-        process.env.PRIVATE_KEY_PASSWORD
+    const provider = new ethers.providers.JsonRpcProvider(
+        process.env.ALCHEMY_RPC_URL
     )
-    wallet = await wallet.connect(provider)
+    const wallet = new ethers.Wallet(process.env.RPC_PRIVATE_KEY!, provider)
+    // const encryptedJson = fs.readFileSync('./.encryptedKey.json', 'utf8')
+    // let wallet = new ethers.Wallet.fromEncryptedJsonSync(
+    //     encryptedJson,
+    //     process.env.PRIVATE_KEY_PASSWORD
+    //     // process.env.RPC_PRIVATE_KEY
+    // )
+    // wallet = await wallet.connect(provider)
     const abi = fs.readFileSync(
         './contracts_SimpleStorage_sol_SimpleStorage.abi',
         'utf8'
@@ -26,6 +33,7 @@ async function main() {
     console.log('Deploying, please wait....')
     const contract = await contractFactory.deploy()
     await contract.deployTransaction.wait(1)
+    console.log(`Contract: ${contract.address}`)
 
     // console.log('Lets deploy with only transaction data!')
     // const nonce = await wallet.getTransactionCount()
@@ -53,8 +61,8 @@ async function main() {
 }
 
 main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.log(error)
-    process.exit(1)
-  })
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.log(error)
+        process.exit(1)
+    })
